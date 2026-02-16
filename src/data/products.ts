@@ -44,7 +44,7 @@ export const FORMAT_CONFIGS: Record<ProductFormat, FormatConfig> = {
   "90x180": {
     label: "90×180 cm",
     layout: "strip",
-    aspectRatio: 90 / 180,
+    aspectRatio: 180 / 90,
   },
   "60x120": {
     label: "60×120 cm",
@@ -139,7 +139,7 @@ const PRODUCT_DEFS: ProductDef[] = [
   { dir: "Statuario_Extra", sizes: [["120x280", 10], ["120x120", 20], ["60x120", 40], ["60x60", 20], ["30x60", 20]] },
   { dir: "Taj_Mahal", sizes: [["120x280", 10], ["160x320", 8], ["120x120", 20], ["60x120", 39], ["60x60", 60], ["30x60", 120]] },
   { dir: "Travertino_Classico", sizes: [["120x280", 8], ["160x320", 6], ["90x180", 20], ["60x120", 40], ["30x60", 120]] },
-  { dir: "Travertino_Titanium", sizes: [["120x280", 8], ["160x320", 6], ["90x180", 4]] },
+  { dir: "Travertino_Titanium", sizes: [["120x280", 8], ["160x320", 6]] },
   { dir: "Verdi_Alpi", sizes: [["120x280", 10], ["160x320", 8], ["60x120", 40], ["60x60", 81]] },
 ];
 

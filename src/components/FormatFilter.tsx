@@ -9,7 +9,7 @@ const FormatFilter = ({ selected, onChange }: FormatFilterProps) => {
   const formats = Object.entries(FORMAT_CONFIGS) as [ProductFormat, typeof FORMAT_CONFIGS[ProductFormat]][];
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap">
       <button
         onClick={() => onChange("all")}
         className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${

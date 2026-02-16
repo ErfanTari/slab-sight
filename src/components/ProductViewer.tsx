@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type Product, FORMAT_CONFIGS, getFacesForProduct } from "@/data/products";
+import { type Product, FORMAT_CONFIGS, type ProductFormat } from "@/data/products";
 import Breadcrumbs from "./Breadcrumbs";
 import StripView from "./StripView";
 import GridView from "./GridView";
@@ -9,14 +9,21 @@ import { Layers, BookOpen, ArrowLeft } from "lucide-react";
 interface ProductViewerProps {
   product: Product;
   onBack: () => void;
+  initialFormat?: ProductFormat;
 }
 
 type ViewMode = "sequence" | "bookmatch";
 
-const ProductViewer = ({ product, onBack }: ProductViewerProps) => {
+const ProductViewer = ({ product, onBack, initialFormat }: ProductViewerProps) => {
+  const initialIndex = initialFormat
+    ? Math.max(0, product.sizes.findIndex(s => s.format === initialFormat))
+    : 0;
+  const [selectedSizeIndex, setSelectedSizeIndex] = useState(initialIndex);
   const [viewMode, setViewMode] = useState<ViewMode>("sequence");
-  const config = FORMAT_CONFIGS[product.format];
-  const faces = getFacesForProduct(product);
+
+  const currentSize = product.sizes[selectedSizeIndex];
+  const config = FORMAT_CONFIGS[currentSize.format];
+  const faces = currentSize.faces;
 
   return (
     <div className="space-y-5 animate-fade-in">
@@ -40,7 +47,7 @@ const ProductViewer = ({ product, onBack }: ProductViewerProps) => {
             <div>
               <h1 className="font-display text-xl font-bold">{product.name}</h1>
               <p className="text-xs text-muted-foreground mt-0.5">
-                {product.sku} · {config.label} · {product.faceCount} faces
+                {config.label} · {currentSize.faceCount} faces
               </p>
             </div>
           </div>
@@ -74,6 +81,25 @@ const ProductViewer = ({ product, onBack }: ProductViewerProps) => {
           )}
         </div>
       </div>
+
+      {/* Format/Size selector */}
+      {product.sizes.length > 1 && (
+        <div className="flex items-center gap-2 flex-wrap">
+          {product.sizes.map((size, idx) => (
+            <button
+              key={size.format}
+              onClick={() => setSelectedSizeIndex(idx)}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                idx === selectedSizeIndex
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-secondary-foreground hover:bg-surface-hover"
+              }`}
+            >
+              {FORMAT_CONFIGS[size.format].label} ({size.faceCount})
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Content */}
       <div className="bg-card rounded-xl border border-border p-4">

@@ -1,56 +1,53 @@
-import slabCalacatta from "@/assets/slab-calacatta.jpg";
-import slabNoir from "@/assets/slab-noir.jpg";
-import slabSandstone from "@/assets/slab-sandstone.jpg";
-import slabPietra from "@/assets/slab-pietra.jpg";
-import slabStatuario from "@/assets/slab-statuario.jpg";
-import slabOnyx from "@/assets/slab-onyx.jpg";
+export type ProductFormat = "120x280" | "160x320" | "120x120" | "90x180" | "60x120" | "60x60" | "30x60";
 
-export type ProductFormat = "120x280" | "160x320" | "120x120" | "60x120" | "60x60" | "30x60";
+export interface ProductSize {
+  format: ProductFormat;
+  faceCount: number;
+  faces: string[];
+}
 
 export interface Product {
   id: string;
   name: string;
-  sku: string;
   collection: string;
-  format: ProductFormat;
-  faceCount: number;
   thumbnail: string;
+  sizes: ProductSize[];
   bookMatch: boolean;
 }
 
 export interface FormatConfig {
   label: string;
-  faceCount: number;
   layout: "strip" | "grid";
   columns?: number;
   rows?: number;
-  aspectRatio: number; // width/height of individual slab
+  aspectRatio: number;
 }
 
 export const FORMAT_CONFIGS: Record<ProductFormat, FormatConfig> = {
   "120x280": {
     label: "120×280 cm",
-    faceCount: 10,
     layout: "strip",
     aspectRatio: 120 / 280,
   },
   "160x320": {
     label: "160×320 cm",
-    faceCount: 8,
     layout: "strip",
     aspectRatio: 160 / 320,
   },
   "120x120": {
     label: "120×120 cm",
-    faceCount: 20,
     layout: "grid",
     columns: 5,
     rows: 4,
     aspectRatio: 1,
   },
+  "90x180": {
+    label: "90×180 cm",
+    layout: "strip",
+    aspectRatio: 90 / 180,
+  },
   "60x120": {
     label: "60×120 cm",
-    faceCount: 40,
     layout: "grid",
     columns: 5,
     rows: 8,
@@ -58,7 +55,6 @@ export const FORMAT_CONFIGS: Record<ProductFormat, FormatConfig> = {
   },
   "60x60": {
     label: "60×60 cm",
-    faceCount: 80,
     layout: "grid",
     columns: 10,
     rows: 8,
@@ -66,42 +62,96 @@ export const FORMAT_CONFIGS: Record<ProductFormat, FormatConfig> = {
   },
   "30x60": {
     label: "30×60 cm",
-    faceCount: 160,
     layout: "grid",
     columns: 10,
     rows: 16,
-    aspectRatio: 30 / 60,
+    aspectRatio: 60 / 30,
   },
 };
 
-const TEXTURES = [slabCalacatta, slabNoir, slabSandstone, slabPietra, slabStatuario, slabOnyx];
-
-function getTexture(index: number) {
-  return TEXTURES[index % TEXTURES.length];
+function faces(product: string, format: string, count: number): string[] {
+  return Array.from({ length: count }, (_, i) => `/images/${product}/${format}/F${i + 1}.jpg`);
 }
 
-export const PRODUCTS: Product[] = [
-  { id: "1", name: "Calacatta Royale", sku: "CAL-280-01", collection: "Prestige Marble", format: "120x280", faceCount: 10, thumbnail: slabCalacatta, bookMatch: true },
-  { id: "2", name: "Noir Marquina", sku: "NOR-280-01", collection: "Prestige Marble", format: "120x280", faceCount: 10, thumbnail: slabNoir, bookMatch: true },
-  { id: "3", name: "Statuario Venato", sku: "STA-320-01", collection: "Grand Format", format: "160x320", faceCount: 8, thumbnail: slabStatuario, bookMatch: true },
-  { id: "4", name: "Pietra Grey", sku: "PIE-320-01", collection: "Grand Format", format: "160x320", faceCount: 8, thumbnail: slabPietra, bookMatch: true },
-  { id: "5", name: "Sahara Dune", sku: "SAH-120-01", collection: "Natural Stone", format: "120x120", faceCount: 20, thumbnail: slabSandstone, bookMatch: false },
-  { id: "6", name: "Verde Onyx", sku: "VER-120-01", collection: "Precious", format: "120x120", faceCount: 20, thumbnail: slabOnyx, bookMatch: false },
-  { id: "7", name: "Calacatta Micro", sku: "CAL-060-01", collection: "Essentials", format: "60x120", faceCount: 40, thumbnail: slabCalacatta, bookMatch: false },
-  { id: "8", name: "Noir Micro", sku: "NOR-060-01", collection: "Essentials", format: "60x120", faceCount: 40, thumbnail: slabNoir, bookMatch: false },
-  { id: "9", name: "Onyx Emerald", sku: "ONX-280-01", collection: "Precious", format: "120x280", faceCount: 10, thumbnail: slabOnyx, bookMatch: true },
-  { id: "10", name: "Pietra Micro", sku: "PIE-060-01", collection: "Essentials", format: "60x120", faceCount: 40, thumbnail: slabPietra, bookMatch: false },
-  { id: "11", name: "Calacatta Mosaic", sku: "CAL-060S-01", collection: "Essentials", format: "60x60", faceCount: 80, thumbnail: slabCalacatta, bookMatch: false },
-  { id: "12", name: "Noir Mosaic", sku: "NOR-060S-01", collection: "Essentials", format: "60x60", faceCount: 80, thumbnail: slabNoir, bookMatch: false },
-  { id: "13", name: "Calacatta Mini", sku: "CAL-030-01", collection: "Essentials", format: "30x60", faceCount: 160, thumbnail: slabCalacatta, bookMatch: false },
-  { id: "14", name: "Sandstone Mini", sku: "SAN-030-01", collection: "Essentials", format: "30x60", faceCount: 160, thumbnail: slabSandstone, bookMatch: false },
+function thumb(product: string): string {
+  return `/images/${product}/thumb.jpg`;
+}
+
+function getCollection(name: string): string {
+  if (name.startsWith("Calacatta_")) return "Calacatta";
+  if (name.startsWith("Lithoform_Crosscut_")) return "Lithoform Crosscut";
+  if (name.startsWith("Lithoform_Veincut_")) return "Lithoform Veincut";
+  if (name.startsWith("Serena_")) return "Serena";
+  if (name.startsWith("Bianco_")) return "Bianco";
+  if (name.startsWith("Travertino_")) return "Travertino";
+  return name.replace(/_/g, " ");
+}
+
+function displayName(dirName: string): string {
+  return dirName.replace(/_/g, " ");
+}
+
+interface ProductDef {
+  dir: string;
+  sizes: [ProductFormat, number][];
+  bookMatch?: boolean;
+}
+
+const BOOKMATCH_PRODUCTS = ["Bianco_Dior", "Macchia_Vecchia", "Gemma_Bronz"];
+
+const PRODUCT_DEFS: ProductDef[] = [
+  { dir: "Arabescato_Corchia", sizes: [["120x280", 10], ["160x320", 8], ["120x120", 20], ["60x120", 40], ["60x60", 24], ["30x60", 160]] },
+  { dir: "Ariel_Bianco", sizes: [["120x280", 10], ["160x320", 8], ["120x120", 20], ["60x120", 40], ["60x60", 69], ["30x60", 160]] },
+  { dir: "Atlantic_Ocean", sizes: [["120x280", 10], ["160x320", 8], ["120x120", 20], ["60x120", 40], ["30x60", 160]] },
+  { dir: "Bianco_Dior", sizes: [["120x280", 2]] },
+  { dir: "Bianco_Gioia", sizes: [["120x280", 10], ["160x320", 8], ["120x120", 20], ["60x120", 40], ["60x60", 20], ["30x60", 40]] },
+  { dir: "Bianco_Stratura", sizes: [["120x280", 8], ["160x320", 6], ["90x180", 20], ["60x120", 40], ["30x60", 120]] },
+  { dir: "Calacatta_Borghini", sizes: [["120x280", 10], ["160x320", 8], ["120x120", 20], ["60x120", 40], ["30x60", 120]] },
+  { dir: "Calacatta_Corchia", sizes: [["120x280", 10], ["160x320", 8], ["120x120", 20], ["60x120", 40], ["60x60", 60], ["30x60", 120]] },
+  { dir: "Calacatta_Cremo", sizes: [["120x280", 10], ["120x120", 20], ["60x120", 40], ["60x60", 39], ["30x60", 40]] },
+  { dir: "Calacatta_noir", sizes: [["120x280", 10], ["120x120", 20], ["60x120", 40], ["30x60", 144]] },
+  { dir: "Calacatta_oro", sizes: [["120x280", 10]] },
+  { dir: "Ceppo_Di_Gre", sizes: [["120x120", 20]] },
+  { dir: "Crystal_Bianco", sizes: [["120x280", 10], ["120x120", 20], ["60x120", 40], ["60x60", 80], ["30x60", 152]] },
+  { dir: "Foresta", sizes: [["120x280", 10], ["160x320", 8], ["60x120", 40]] },
+  { dir: "Forge_Eleganza", sizes: [["120x280", 10], ["160x320", 8], ["60x120", 40], ["60x60", 80], ["30x60", 159]] },
+  { dir: "French_Vanilla", sizes: [["160x320", 8]] },
+  { dir: "Gemma_Bronz", sizes: [["120x280", 2]] },
+  { dir: "Lithoform_Crosscut_Coast", sizes: [["120x280", 10]] },
+  { dir: "Lithoform_Crosscut_Dunes", sizes: [["120x280", 10]] },
+  { dir: "Lithoform_Crosscut_Twilight", sizes: [["120x280", 10]] },
+  { dir: "Lithoform_Crosscut_Vista", sizes: [["120x280", 10]] },
+  { dir: "Lithoform_Veincut_Coast", sizes: [["120x280", 8], ["90x180", 10]] },
+  { dir: "Lithoform_Veincut_Dunes", sizes: [["120x280", 8]] },
+  { dir: "Lithoform_Veincut_Twilight", sizes: [["120x280", 8]] },
+  { dir: "Lithoform_Veincut_Vista", sizes: [["120x280", 8]] },
+  { dir: "Macchia_Vecchia", sizes: [["120x280", 2]] },
+  { dir: "Onyx", sizes: [["120x120", 21], ["60x120", 35], ["60x60", 84], ["30x60", 152]] },
+  { dir: "Onyx_Halo", sizes: [["120x280", 10], ["120x120", 17], ["60x120", 20], ["30x60", 21]] },
+  { dir: "Pietra_Imperialle", sizes: [["120x280", 9], ["160x320", 8], ["60x120", 40], ["60x60", 81], ["30x60", 160]] },
+  { dir: "Sahara_Noir", sizes: [["120x280", 8], ["60x120", 41], ["30x60", 120]] },
+  { dir: "Serena_Crater", sizes: [["120x280", 10]] },
+  { dir: "Serena_Dusk", sizes: [["120x280", 10]] },
+  { dir: "Serena_Flint", sizes: [["120x280", 10]] },
+  { dir: "Serena_Pewter", sizes: [["120x280", 10]] },
+  { dir: "Serena_Shale", sizes: [["120x280", 10]] },
+  { dir: "Serena_Valley", sizes: [["120x280", 10]] },
+  { dir: "Statuario_Extra", sizes: [["120x280", 10], ["120x120", 20], ["60x120", 40], ["60x60", 20], ["30x60", 20]] },
+  { dir: "Taj_Mahal", sizes: [["120x280", 10], ["160x320", 8], ["120x120", 20], ["60x120", 39], ["60x60", 60], ["30x60", 120]] },
+  { dir: "Travertino_Classico", sizes: [["120x280", 8], ["160x320", 6], ["90x180", 20], ["60x120", 40], ["30x60", 120]] },
+  { dir: "Travertino_Titanium", sizes: [["120x280", 8], ["160x320", 6], ["90x180", 4]] },
+  { dir: "Verdi_Alpi", sizes: [["120x280", 10], ["160x320", 8], ["60x120", 40], ["60x60", 81]] },
 ];
 
-export function getFacesForProduct(product: Product): string[] {
-  const faces: string[] = [];
-  for (let i = 0; i < product.faceCount; i++) {
-    // Cycle through textures with slight variation conceptually
-    faces.push(getTexture(TEXTURES.indexOf(product.thumbnail) + i));
-  }
-  return faces;
-}
+export const PRODUCTS: Product[] = PRODUCT_DEFS.map((def, idx) => ({
+  id: String(idx + 1),
+  name: displayName(def.dir),
+  collection: getCollection(def.dir),
+  thumbnail: thumb(def.dir),
+  sizes: def.sizes.map(([format, count]) => ({
+    format,
+    faceCount: count,
+    faces: faces(def.dir, format, count),
+  })),
+  bookMatch: BOOKMATCH_PRODUCTS.includes(def.dir),
+}));

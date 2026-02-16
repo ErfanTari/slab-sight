@@ -1,4 +1,4 @@
-import { FORMAT_CONFIGS, type Product } from "@/data/products";
+import { type Product } from "@/data/products";
 import { BookOpen } from "lucide-react";
 
 interface ProductCardProps {
@@ -7,7 +7,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onClick }: ProductCardProps) => {
-  const config = FORMAT_CONFIGS[product.format];
+  const formatCount = product.sizes.length;
 
   return (
     <button
@@ -29,13 +29,13 @@ const ProductCard = ({ product, onClick }: ProductCardProps) => {
             <BookOpen className="h-3.5 w-3.5 text-primary flex-shrink-0 ml-1" />
           )}
         </div>
-        <p className="text-xs text-muted-foreground">{product.sku}</p>
+        <p className="text-xs text-muted-foreground">{product.collection}</p>
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-badge text-badge-foreground">
-            {config.label}
+            {formatCount} {formatCount === 1 ? "format" : "formats"}
           </span>
           <span className="text-[10px] text-dim">
-            {product.faceCount} faces · {config.layout}
+            {product.sizes.map(s => s.format).join(", ")}
           </span>
         </div>
       </div>

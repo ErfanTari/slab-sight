@@ -16,9 +16,10 @@ const Index = () => {
       const matchesSearch =
         !q ||
         p.name.toLowerCase().includes(q) ||
-        p.sku.toLowerCase().includes(q) ||
         p.collection.toLowerCase().includes(q);
-      const matchesFormat = formatFilter === "all" || p.format === formatFilter;
+      const matchesFormat =
+        formatFilter === "all" ||
+        p.sizes.some((s) => s.format === formatFilter);
       return matchesSearch && matchesFormat;
     });
   }, [search, formatFilter]);
@@ -29,6 +30,7 @@ const Index = () => {
         <ProductViewer
           product={selectedProduct}
           onBack={() => setSelectedProduct(null)}
+          initialFormat={formatFilter !== "all" ? formatFilter : undefined}
         />
       </div>
     );
@@ -56,7 +58,7 @@ const Index = () => {
         <h2 className="font-display text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-6">
           Available Formats
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
           {formatEntries.map(([key, config]) => (
             <button
               key={key}
@@ -65,7 +67,7 @@ const Index = () => {
             >
               <p className="text-2xl font-display font-semibold text-foreground">{config.label}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                {config.faceCount} faces · {config.layout === "strip" ? "Strip view" : `${config.columns}×${config.rows} grid`}
+                {config.layout === "strip" ? "Strip view" : `${config.columns}×${config.rows} grid`}
               </p>
             </button>
           ))}

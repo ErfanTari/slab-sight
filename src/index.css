@@ -2,59 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Calibre:wght@300;400;500;600&display=swap');
 
 @layer base {
   :root {
-    --background: 220 15% 8%;
-    --foreground: 220 10% 92%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
 
-    --card: 220 14% 11%;
-    --card-foreground: 220 10% 92%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 10%;
 
-    --popover: 220 14% 11%;
-    --popover-foreground: 220 10% 92%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 38 60% 55%;
-    --primary-foreground: 220 15% 8%;
+    --primary: 0 0% 12%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 12% 16%;
-    --secondary-foreground: 220 10% 75%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 40%;
 
-    --muted: 220 12% 14%;
-    --muted-foreground: 220 8% 50%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 55%;
 
-    --accent: 38 40% 25%;
-    --accent-foreground: 38 60% 75%;
+    --accent: 0 0% 94%;
+    --accent-foreground: 0 0% 20%;
 
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 12% 18%;
-    --input: 220 12% 18%;
-    --ring: 38 60% 55%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 12%;
 
-    --radius: 0.5rem;
+    --radius: 0.375rem;
 
-    --sidebar-background: 220 14% 10%;
-    --sidebar-foreground: 220 10% 85%;
-    --sidebar-primary: 38 60% 55%;
-    --sidebar-primary-foreground: 220 15% 8%;
-    --sidebar-accent: 220 12% 16%;
-    --sidebar-accent-foreground: 220 10% 85%;
-    --sidebar-border: 220 12% 18%;
-    --sidebar-ring: 38 60% 55%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 25%;
+    --sidebar-primary: 0 0% 12%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 94%;
+    --sidebar-accent-foreground: 0 0% 25%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 0 0% 12%;
 
-    --surface-elevated: 220 14% 13%;
-    --surface-hover: 220 12% 20%;
-    --text-dim: 220 8% 40%;
-    --badge-bg: 220 12% 18%;
-    --badge-text: 220 10% 70%;
-  }
-
-  .dark {
-    --background: 220 15% 8%;
-    --foreground: 220 10% 92%;
+    --surface-elevated: 0 0% 97%;
+    --surface-hover: 0 0% 92%;
+    --text-dim: 0 0% 60%;
+    --badge-bg: 0 0% 94%;
+    --badge-text: 0 0% 40%;
   }
 }
 
@@ -64,12 +59,13 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'DM Sans', sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Calibri', 'Segoe UI', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Calibri', 'Segoe UI', sans-serif;
+    font-weight: 600;
   }
 }
 

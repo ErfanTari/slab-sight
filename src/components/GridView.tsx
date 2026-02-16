@@ -10,7 +10,7 @@ const GridView = ({ faces, config }: GridViewProps) => {
 
   return (
     <div
-      className="grid gap-1.5 w-full"
+      className="grid gap-0.5 w-full"
       style={{
         gridTemplateColumns: `repeat(${cols}, 1fr)`,
       }}
@@ -30,8 +30,8 @@ const GridView = ({ faces, config }: GridViewProps) => {
             loading="lazy"
             className="w-full h-full object-cover"
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/80 to-transparent px-1.5 py-1">
-            <span className="text-[9px] font-medium text-foreground/70">
+          <div className="absolute bottom-0.5 left-1">
+            <span className="text-[9px] font-medium text-white/80 drop-shadow-sm">
               F{String(i + 1).padStart(2, "0")}
             </span>
           </div>

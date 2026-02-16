@@ -19,8 +19,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["DM Sans", "sans-serif"],
-        display: ["Space Grotesk", "sans-serif"],
+        sans: ["Calibri", "Segoe UI", "sans-serif"],
+        display: ["Calibri", "Segoe UI", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

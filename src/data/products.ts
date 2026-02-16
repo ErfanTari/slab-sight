@@ -5,7 +5,7 @@ import slabPietra from "@/assets/slab-pietra.jpg";
 import slabStatuario from "@/assets/slab-statuario.jpg";
 import slabOnyx from "@/assets/slab-onyx.jpg";
 
-export type ProductFormat = "120x280" | "160x320" | "120x120" | "60x120";
+export type ProductFormat = "120x280" | "160x320" | "120x120" | "60x120" | "60x60" | "30x60";
 
 export interface Product {
   id: string;
@@ -56,6 +56,22 @@ export const FORMAT_CONFIGS: Record<ProductFormat, FormatConfig> = {
     rows: 8,
     aspectRatio: 60 / 120,
   },
+  "60x60": {
+    label: "60×60 cm",
+    faceCount: 80,
+    layout: "grid",
+    columns: 10,
+    rows: 8,
+    aspectRatio: 1,
+  },
+  "30x60": {
+    label: "30×60 cm",
+    faceCount: 160,
+    layout: "grid",
+    columns: 10,
+    rows: 16,
+    aspectRatio: 30 / 60,
+  },
 };
 
 const TEXTURES = [slabCalacatta, slabNoir, slabSandstone, slabPietra, slabStatuario, slabOnyx];
@@ -75,6 +91,10 @@ export const PRODUCTS: Product[] = [
   { id: "8", name: "Noir Micro", sku: "NOR-060-01", collection: "Essentials", format: "60x120", faceCount: 40, thumbnail: slabNoir, bookMatch: false },
   { id: "9", name: "Onyx Emerald", sku: "ONX-280-01", collection: "Precious", format: "120x280", faceCount: 10, thumbnail: slabOnyx, bookMatch: true },
   { id: "10", name: "Pietra Micro", sku: "PIE-060-01", collection: "Essentials", format: "60x120", faceCount: 40, thumbnail: slabPietra, bookMatch: false },
+  { id: "11", name: "Calacatta Mosaic", sku: "CAL-060S-01", collection: "Essentials", format: "60x60", faceCount: 80, thumbnail: slabCalacatta, bookMatch: false },
+  { id: "12", name: "Noir Mosaic", sku: "NOR-060S-01", collection: "Essentials", format: "60x60", faceCount: 80, thumbnail: slabNoir, bookMatch: false },
+  { id: "13", name: "Calacatta Mini", sku: "CAL-030-01", collection: "Essentials", format: "30x60", faceCount: 160, thumbnail: slabCalacatta, bookMatch: false },
+  { id: "14", name: "Sandstone Mini", sku: "SAN-030-01", collection: "Essentials", format: "30x60", faceCount: 160, thumbnail: slabSandstone, bookMatch: false },
 ];
 
 export function getFacesForProduct(product: Product): string[] {

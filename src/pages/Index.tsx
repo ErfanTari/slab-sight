@@ -56,7 +56,7 @@ const Index = () => {
         <h2 className="font-display text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-6">
           Available Formats
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {formatEntries.map(([key, config]) => (
             <button
               key={key}
